@@ -1,0 +1,3 @@
+include *
+exclude .gitignore
+recursive-include pyrvasive *.py *.ddf *.mkd
