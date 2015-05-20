@@ -7,82 +7,100 @@ Python client for Pervasive SQL databases
 Usage
 -----
 
-    >>> import pyrvasive
+```python
+>>> import pyrvasive
+```
 
 #### Get a list of all Pervasive Database DSN's configured
 
-    >>> pyrvasive.sources()
-    ('DEMODATA', 'MAXDEV', 'MAXDAT')
+```python
+>>> pyrvasive.sources()
+('DEMODATA', 'MAXDEV', 'MAXDAT')
+```
 
 #### Create a database connection object
 
-    >>> db = pyrvasive.Connection('DEMODATA')
+```python
+>>> db = pyrvasive.Connection('DEMODATA')
+```
 
 #### List the tables in the database
 
-    >>> db.tables
-    ('Billing', 'Class', 'Course', 'Department', 'Enrolls', 'Faculty', 'Person', 'Room', 'Student', 'Tuition')
+```python
+>>> db.tables
+('Billing', 'Class', 'Course', 'Department', 'Enrolls', 'Faculty', 'Person', 'Room', 'Student', 'Tuition')
+```
 
 #### Print the column info for the 'Billing' table
 
-    >>> for c in db.columns('Billing'):
-    ...     print c['name'], c['type'], c['size'], c['null']
-    ...
-    Student_ID <class 'decimal.Decimal'> 20 False
-    Transaction_Number <type 'int'> 5 True
-    Log <type 'datetime.datetime'> 19 True
-    Amount_Owed <class 'decimal.Decimal'> 7 True
-    Amount_Paid <class 'decimal.Decimal'> 7 True
-    Registrar_ID <class 'decimal.Decimal'> 20 False
-    Comments <type 'str'> 65500 True
+```python
+>>> for c in db.columns('Billing'):
+...     print c['name'], c['type'], c['size'], c['null']
+...
+Student_ID <class 'decimal.Decimal'> 20 False
+Transaction_Number <type 'int'> 5 True
+Log <type 'datetime.datetime'> 19 True
+Amount_Owed <class 'decimal.Decimal'> 7 True
+Amount_Paid <class 'decimal.Decimal'> 7 True
+Registrar_ID <class 'decimal.Decimal'> 20 False
+Comments <type 'str'> 65500 True
+```
 
 #### Basic SELECT
 
-    >>> q = """
-            SELECT * FROM "Billing"
-            WHERE Student_ID = ?;
-            """
-    >>> params = (100062607,)
-    >>> for row in db.execute(q, params):
-    ...     print row.Amount_Paid, row.Amount_Owed
-    ...
-    1031.25 2125.00
+```python
+>>> q = """
+        SELECT * FROM "Billing"
+        WHERE Student_ID = ?;
+        """
+>>> params = (100062607,)
+>>> for row in db.execute(q, params):
+...     print row.Amount_Paid, row.Amount_Owed
+...
+1031.25 2125.00
+```
 
 #### Basic DELETE
 
-    >>> q = """
-            DELETE FROM "Billing"
-            WHERE Student_ID = ?;
-            """
-    >>> params = (100062607,)
-    >>> rows_deleted = db.execute(q, params)
+```python
+>>> q = """
+        DELETE FROM "Billing"
+        WHERE Student_ID = ?;
+        """
+>>> params = (100062607,)
+>>> rows_deleted = db.execute(q, params)
+```
 
 #### Basic INSERT
 
-    >>> table = 'Enrolls'
-    >>> data = {
-            'Student_ID': 123456,
-            'Class_ID':   72,
-            'Grade':      91.8,
-        }
-    >>> rows_inserted = db.insert(table, data)
+```python
+>>> table = 'Enrolls'
+>>> data = {
+        'Student_ID': 123456,
+        'Class_ID':   72,
+        'Grade':      91.8,
+    }
+>>> rows_inserted = db.insert(table, data)
+```
 
 #### Execute Multi-Statement SQL String
 
-    >>> q = """
-            CREATE TABLE "Student Badges" (
-                Student_ID CHAR(10) NOT NULL,
-                Badge_Num UINT NOT NULL,
-                Created TIMESTAMP,
-                Log LONGVARCHAR);
+```python
+>>> q = """
+        CREATE TABLE "Student Badges" (
+            Student_ID CHAR(10) NOT NULL,
+            Badge_Num UINT NOT NULL,
+            Created TIMESTAMP,
+            Log LONGVARCHAR);
 
-            CREATE UNIQUE NOT MODIFIABLE INDEX index1 on "Student Badges"
-            (Student_ID ASC);
+        CREATE UNIQUE NOT MODIFIABLE INDEX index1 on "Student Badges"
+        (Student_ID ASC);
 
-            CREATE INDEX index2 on "Student Badges"
-            (Badge_Num ASC);
-            """
-    >>> db.executescript(q)
+        CREATE INDEX index2 on "Student Badges"
+        (Badge_Num ASC);
+        """
+>>> db.executescript(q)
+```
 
 
 Testing
@@ -101,4 +119,5 @@ Python 2.7
 
 License
 -------
-Simplified BSD
+Code is availabe according to the MIT License
+(see [LICENSE](https://github.com/ryanss/pyrvasive/raw/master/LICENSE)).
